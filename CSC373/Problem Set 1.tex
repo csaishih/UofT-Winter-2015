@@ -1,0 +1,142 @@
+%%  Problem Set 1 for CSC373H1, Winter 2015,
+%%  at the University of Toronto.
+%%
+%%  Copyright (c) 2015 Francois Pitt <fpitt@cs.utoronto.ca>
+%%  last updated at 09:30 (EST) on Tue  6 Jan 2015
+%%
+%%  CC BY-SA 4.0
+%%  This work (the current file named 'PS1handout.tex') is licensed under
+%%  the Creative Commons Attribution-ShareAlike 4.0 International License.
+%%  To view a copy of this license, visit
+%%      http://creativecommons.org/licenses/by-sa/4.0/
+%%  or send a letter to: Creative Commons, 444 Castro Street, Suite 900,
+%%  Mountain View, California, 94041, USA.
+%%  This is a human-readable summary of (and not a substitute for) the
+%%  license.
+%%  You are free to:
+%%      Share -- copy and redistribute the material in any medium or format
+%%      Adapt -- remix, transform, and build upon the material for any
+%%          purpose, even commercially.
+%%      The licensor cannot revoke these freedoms as long as you follow the
+%%          license terms.
+%%  Under the following terms:
+%%      Attribution -- You must give appropriate credit, provide a link to
+%%          the license, and indicate if changes were made. You may do so in
+%%          any reasonable manner, but not in any way that suggests the
+%%          licensor endorses you or your use.
+%%      ShareAlike -- If you remix, transform, or build upon the material,
+%%          you must distribute your contributions under the same license as
+%%          the original.
+%%      No additional restrictions -- You may not apply legal terms or
+%%          technological measures that legally restrict others from doing
+%%          anything the license permits.
+%%  Notices:
+%%      You do not have to comply with the license for elements of the
+%%      material in the public domain or where your use is permitted by an
+%%      applicable exception or limitation.
+%%      No warranties are given. The license may not give you all of the
+%%      permissions necessary for your intended use. For example, other
+%%      rights such as publicity, privacy, or moral rights may limit how you
+%%      use the material.
+
+\RequirePackage[l2tabu,orthodox]{nag}  % warn about common LaTeX pitfalls
+\RequirePackage[ascii]{inputenc}  % input is 7-bit ASCII
+\RequirePackage{fixltx2e}  % fix LaTeX2e kernel bugs
+
+\documentclass[11pt,twoside]{article}
+\usepackage{calc}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hmargin=1in,vmargin=1in]{geometry}
+\usepackage{lastpage}
+\usepackage{relsize}
+\usepackage[normalem]{ulem}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Set up fonts.
+\usepackage[T1]{fontenc}  % use true 8-bit fonts
+\usepackage{slantsc}  % allow slanted small-caps
+\usepackage{microtype}  % perform various font optimizations
+% Use Palatino-based monospace instead of kpfonts' default.
+\usepackage{newpxtext}
+\ttfamily
+\DeclareFontShape{T1}{\ttdefault}{m}{scsl}{<->ssub*\ttdefault/m/sc}{}
+\DeclareFontShape{T1}{\ttdefault}{b}{scsl}{<->ssub*\ttdefault/b/sc}{}
+% "Kepler" fonts.
+\usepackage[nott,notextcomp]{kpfonts}
+% Use curvier Latin Modern brackets instead of kpfonts' glyphs.
+\DeclareSymbolFont{lmsymb}     {OMS}{lmsy}{m}{n}
+\DeclareSymbolFont{lmlargesymb}{OMX}{lmex}{m}{n}
+\DeclareMathDelimiter{\rbrace}{\mathclose}{lmsymb}{"67}{lmlargesymb}{"09}
+\DeclareMathDelimiter{\lbrace}{\mathopen}{lmsymb}{"66}{lmlargesymb}{"08}
+
+%% For drawing diagrams.
+%\usepackage{tikz}
+%\usetikzlibrary{positioning}
+
+% Page layout: stretch text to fill up page.
+\addtolength\footskip{.25\headheight}
+\flushbottom
+
+% Common list settings.
+\setlist{topsep=\parsep,itemsep=0pt}  % no extra vertical space around lists
+
+% Common macros.
+
+% Headings.
+\pagestyle{fancy}
+\let\headrule\empty
+\let\footrule\empty
+\lhead{\scshape CSC\,373\,H1\ Shihan\, Ai\, 999700649}
+\chead{\large\scshape Problem Set \#\,1}
+\rhead{\scshape Winter 2015}
+\lfoot{\scshape Shihan Ai, 999700649, g3aishih}
+\cfoot{\scshape}
+\rfoot{\scshape page \thepage\space of \pageref{LastPage}}
+
+
+\begin{document}
+\begin{enumerate}[leftmargin=0pt,label=(\alph*)]
+\item ALGORITHM(L)\hspace{26mm}{\scshape //L is the list of processing times}
+    \begin{enumerate}[leftmargin=10pt,label=\arabic*]
+    \item\hspace{2mm} n = |L| \hspace{35mm}{\scshape //get length of list input L}
+    \item\hspace{2mm} R = []\hspace{38mm}{\scshape //output}
+    \item\hspace{2mm} Lcopy = deepcopy(L)
+    \item\hspace{2mm} sort(Lcopy)\hspace{28mm}{\scshape //sort in ascending order}
+    \item\hspace{2mm} {\bf for}\ i\ =\ 0\ {\bf to}\ n\ $-$\ 1 \hspace{18mm}{\scshape //for each processing time {\bf P} in Lcopy, find the index of}
+    \item\hspace{2mm} \hspace{5mm} P\ =\ Lcopy[i]\hspace{20mm}{\scshape //the first occurrence of {\bf P} in L}
+    \item\hspace{2mm} \hspace{5mm} {\bf for}\ j\ =\ 0\ {\bf to}\ n\ $-$\ 1
+    \item\hspace{2mm} \hspace{5mm} \hspace{5mm} {\bf if} L[j]\ =\ P
+    \item\hspace{2mm} \hspace{5mm} \hspace{5mm} \hspace{5mm} L[j]\ =\ $-$1 \hspace{13mm}{\scshape //found an occurrence, set the occurrence to $-$1 so we don't}
+    \item\hspace{2mm} \hspace{5mm} \hspace{5mm} \hspace{5mm} R.append(j+1) \hspace{3mm}{\scshape //return this index again in case there are duplicates of}
+    \item\hspace{2mm} \hspace{5mm} \hspace{5mm} \hspace{5mm} {\bf break} \hspace{18mm}{\scshape //this occurrence in L}
+    \item\hspace{2mm}{\bf return} R \hspace{32mm}{\scshape //no elements can be $-$1 in L originally since $t_{1},...,t_{n}\ \in\ \mathbb{N}$}
+
+    \end{enumerate}
+\item A partial solution for my algorithm is a list {\bf K} that contains the indices of processing time(s) sorted such that the average completion time of executing all process(es) in the order specified by {\bf K} is minimized.\\
+{\bf Partial solutions:} (Let $R_{n}$ be the partial solution constructed by the algorithm after iteration $n$) \\
+n = 0 \hspace{5mm} $R_{0}$ = []\\
+n = 1 \hspace{5mm} $R_{1}$ = [1]\\
+n = 2 \hspace{5mm} $R_{2}$ = [1, 4]\\
+n = 3 \hspace{5mm} $R_{3}$ = [1, 4, 3]\\
+n = 4 \hspace{5mm} $R_{4}$ = [1, 4, 3, 2]\\
+
+\item Let $R_{0},\ R_{1},\ ...,\ R_{n}$ be the {\bf R} list at the end of each iteration of the loop on line 5. For any optimum solution OPT, we say OPT {\bf extends} $R_{i}$ if
+    \begin{itemize}
+    \item for $i>0,\ i\ \in\ \mathbb{Z},\ OPT[k]\ =\ R_{i}[k]$ for $k=0,...,m$ where $m=|R_{i}|\ -\ 1$
+    \item for $i\ =\ 0,\ R_{i}\ =\ []$
+    \end{itemize}
+A partial solution, $R_{i}$ is said to be promising iff $\ \exists OPT$ that extends $R_{i}$
+
+\item {\bf Proof:} $R_{i}$ is promising, for all $i$ where $i$ = $0,...,|L|-1$ by induction on $i$ (\# of iterations)
+
+\item Let $T_{i}$ be the process number of $t_{i}$\\
+There is only one case
+    \begin{itemize}
+    \item $R_{i+1}\ =\ R_{i}$ append $T_{i+1}$
+    \end{itemize}
+\end{enumerate}
+
+\end{document}
