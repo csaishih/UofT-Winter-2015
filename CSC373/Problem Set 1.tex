@@ -132,10 +132,16 @@ A partial solution, $R_{i}$ is said to be promising iff $\ \exists OPT$ that ext
 
 \item {\bf Proof:} $R_{i}$ is promising, for all $i$ where $i$ = $0,...,|L|-1$ by induction on $i$ (\# of iterations)
 
-\item Let $T_{i}$ be the process number of $t_{i}$\\
-There is only one case
+\item Lcopy contains $t_{1},...,t_{n}$ in a sorted ascending order. Let $T_{1},...,T_{n}$ be the elements of Lcopy.\\
+In other words,\\
+$T_{1}$ = some element in \{$t_{1},...,t_{n}$\}\\
+$T_{2}$ = some element in (\{$t_{1},...,t_{n}$\} $-$ \{$T_{1}$\})\\
+$T_{3}$ = some element in (\{$t_{1},...,t_{n}$\} $-$ \{$T_{1}, T_{2}$\})\\
+$T_{n}$ = some element in (\{$t_{1},...,t_{n}$\} $-$ \{$T_{1},...,T_{n-1}$\})\\\\
+Let $K_{1}$ be the index of $T_{1}$ in L, $K_{2}$ be the index of $T_{2}$ in L, ..., $K_{n}$ be the index of $T_{n}$ in L. The values of $K_{1},...,K_{n}$ are unique, for example, if some $T_{i}$ = $T_{j}$ then there will be at least 2 occurrences of the value {\bf G}, (G = $T_{i}\ =\ T_{j}$) in L. $K_{i}$ will be the index of one occurrence of {\bf G} in L and $K_{j}$ will be the index of another occurrence of {\bf G} in L\\\\
+For each iteration, there is only one case:
     \begin{itemize}
-    \item $R_{i+1}\ =\ R_{i}$ append $T_{i+1}$
+    \item $R_{i+1}\ =\ R_{i}$ append $K_{i+1}$
     \end{itemize}
 \end{enumerate}
 
