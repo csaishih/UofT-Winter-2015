@@ -89,7 +89,7 @@
 \pagestyle{fancy}
 \let\headrule\empty
 \let\footrule\empty
-\lhead{\scshape CSC\,373\,H1\ Shihan\, Ai\, 999700649}
+\lhead{\scshape CSC\,373\,H1}
 \chead{\large\scshape Problem Set \#\,1}
 \rhead{\scshape Winter 2015}
 \lfoot{\scshape Shihan Ai, 999700649, g3aishih}
@@ -133,16 +133,25 @@ A partial solution, $R_{i}$ is said to be promising iff $\ \exists OPT$ that ext
 \item {\bf Proof:} $R_{i}$ is promising, for all $i$ where $i$ = $0,...,|L|-1$ by induction on $i$ (\# of iterations)
 
 \item Lcopy contains $t_{1},...,t_{n}$ in a sorted ascending order. Let $T_{1},...,T_{n}$ be the elements of Lcopy.\\
-In other words,\\
-$T_{1}$ = some element in \{$t_{1},...,t_{n}$\}\\
-$T_{2}$ = some element in (\{$t_{1},...,t_{n}$\} $-$ \{$T_{1}$\})\\
-$T_{3}$ = some element in (\{$t_{1},...,t_{n}$\} $-$ \{$T_{1}, T_{2}$\})\\
-$T_{n}$ = some element in (\{$t_{1},...,t_{n}$\} $-$ \{$T_{1},...,T_{n-1}$\})\\\\
-Let $K_{1}$ be the index of $T_{1}$ in L, $K_{2}$ be the index of $T_{2}$ in L, ..., $K_{n}$ be the index of $T_{n}$ in L. The values of $K_{1},...,K_{n}$ are unique, for example, if some $T_{i}$ = $T_{j}$ then there will be at least 2 occurrences of the value {\bf G}, (G = $T_{i}\ =\ T_{j}$) in L. $K_{i}$ will be the index of one occurrence of {\bf G} in L and $K_{j}$ will be the index of another occurrence of {\bf G} in L\\\\
+Let $K_{1}$ be the index of $T_{1}$ in L, . . . , $K_{n}$ be the index of $T_{n}$ in L. The values of $K_{1},...,K_{n}$ are unique, for example, if some $T_{i}$ = $T_{j}$ then there will be at least 2 occurrences of the value {\bf G}, (G = $T_{i}\ =\ T_{j}$) in L. $K_{i}$ will be the index of one occurrence of {\bf G} in L and $K_{j}$ will be the index of another occurrence of {\bf G} in L\\\\
 For each iteration, there is only one case:
     \begin{itemize}
     \item $R_{i+1}\ =\ R_{i}$ append $K_{i+1}$
     \end{itemize}
+\newpage
+\item Given that 
+\begin{itemize}
+\item $R_{i+1}\ =\ R_{i}$ append $K_{i+1}$
+\end{itemize}
+Does $R_{i+1}$ extend OPT using our definition of {\bf extend} in (c)?\\\\
+There are two subcases:\\
+{\bf Case 1:} Yes, $R_{i+1}$ extends OPT by our definition of {\bf extend} therefore $R_{i+1}$ is promising.\\
+{\bf Case 2:} No, $R_{i+1}$ does not extend OPT by our definition of {\bf extend}.
+\item Every $R_{i}$ is promising, in particular, $R_{n}$ is promising.\\
+Therefore, $\exists$OPT such that:
+    \begin{itemize}
+    \item if n = 0, $R_{n}$ = []
+    \item if $n>0,\ n\ \in\ \mathbb{Z},\ OPT[k]\ =\ R_{n}[k]$ for $k=0,...,m$ where $m=|R_{n}|\ -\ 1$
+    \end{itemize}
 \end{enumerate}
-
 \end{document}
