@@ -1,0 +1,37 @@
+% Assignment 1c) A program using all forms of loop building and loop exit constructs.
+% CSC488 Winter 2015 Group 07
+% Author: Shihan Ai
+% This program builds
+% - Infinite loop with exit statement
+% - Infinite loop with conditional exit statement
+% - Conditional loop with no exit statement
+% - Conditional loop with exit statement
+% - Conditional loop with conditional exit statement
+
+
+begin							% main program					(scope)
+	integer n  					% declare statement				(type variablenames)
+	n <= 0						% assignment statement			(variable '<''=' expression)
+
+	loop						% infinite loop statement		('loop' statement 'end')
+		exit					% exit statement
+	end							% end keyword
+
+	loop						% infinite loop	statement		('loop' statement 'end')
+		exit when (n = 0)		% conditional exit statement	('exit' 'when' expression)
+	end
+
+	while (n = 0) do			% conditional loop statement	('while' expression 'do' statement 'end')
+		put n					% put statement					('put' output)
+		n <= n + 1 				% assignment statement			(variable '<''=' expression)
+	end
+
+	while (n = 1) do			% conditional loop statement	('while' expression 'do' statement 'end')
+		exit					% exit statement
+	end							% end keyword
+
+	while (n = 1) do			% conditional loop statement	('while' expression 'do' statement 'end')
+		exit when (n = 0)		% conditional exit statement	('exit' 'when' expression)
+		n <= n - 1 				% assignment statement			(variable '<''=' expression)
+	end							% end keyword
+end								% end main program
