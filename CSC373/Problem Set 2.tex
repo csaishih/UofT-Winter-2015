@@ -1,0 +1,124 @@
+%%  Problem Set 2 for CSC373H1, Winter 2015,
+%%  at the University of Toronto.
+%%
+%%  Copyright (c) 2015 Francois Pitt <fpitt@cs.utoronto.ca>
+%%  last updated at 09:30 (EST) on Tue  6 Jan 2015
+%%
+%%  CC BY-SA 4.0
+%%  This work (the current file named 'PS1handout.tex') is licensed under
+%%  the Creative Commons Attribution-ShareAlike 4.0 International License.
+%%  To view a copy of this license, visit
+%%      http://creativecommons.org/licenses/by-sa/4.0/
+%%  or send a letter to: Creative Commons, 444 Castro Street, Suite 900,
+%%  Mountain View, California, 94041, USA.
+%%  This is a human-readable summary of (and not a substitute for) the
+%%  license.
+%%  You are free to:
+%%      Share -- copy and redistribute the material in any medium or format
+%%      Adapt -- remix, transform, and build upon the material for any
+%%          purpose, even commercially.
+%%      The licensor cannot revoke these freedoms as long as you follow the
+%%          license terms.
+%%  Under the following terms:
+%%      Attribution -- You must give appropriate credit, provide a link to
+%%          the license, and indicate if changes were made. You may do so in
+%%          any reasonable manner, but not in any way that suggests the
+%%          licensor endorses you or your use.
+%%      ShareAlike -- If you remix, transform, or build upon the material,
+%%          you must distribute your contributions under the same license as
+%%          the original.
+%%      No additional restrictions -- You may not apply legal terms or
+%%          technological measures that legally restrict others from doing
+%%          anything the license permits.
+%%  Notices:
+%%      You do not have to comply with the license for elements of the
+%%      material in the public domain or where your use is permitted by an
+%%      applicable exception or limitation.
+%%      No warranties are given. The license may not give you all of the
+%%      permissions necessary for your intended use. For example, other
+%%      rights such as publicity, privacy, or moral rights may limit how you
+%%      use the material.
+
+\RequirePackage[l2tabu,orthodox]{nag}  % warn about common LaTeX pitfalls
+\RequirePackage[ascii]{inputenc}  % input is 7-bit ASCII
+\RequirePackage{fixltx2e}  % fix LaTeX2e kernel bugs
+
+\documentclass[11pt,twoside]{article}
+\usepackage{calc}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hmargin=1in,vmargin=1in]{geometry}
+\usepackage{lastpage}
+\usepackage{relsize}
+\usepackage[normalem]{ulem}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Set up fonts.
+\usepackage[T1]{fontenc}  % use true 8-bit fonts
+\usepackage{slantsc}  % allow slanted small-caps
+\usepackage{microtype}  % perform various font optimizations
+% Use Palatino-based monospace instead of kpfonts' default.
+\usepackage{newpxtext}
+\ttfamily
+\DeclareFontShape{T1}{\ttdefault}{m}{scsl}{<->ssub*\ttdefault/m/sc}{}
+\DeclareFontShape{T1}{\ttdefault}{b}{scsl}{<->ssub*\ttdefault/b/sc}{}
+% "Kepler" fonts.
+\usepackage[nott,notextcomp]{kpfonts}
+% Use curvier Latin Modern brackets instead of kpfonts' glyphs.
+\DeclareSymbolFont{lmsymb}     {OMS}{lmsy}{m}{n}
+\DeclareSymbolFont{lmlargesymb}{OMX}{lmex}{m}{n}
+\DeclareMathDelimiter{\rbrace}{\mathclose}{lmsymb}{"67}{lmlargesymb}{"09}
+\DeclareMathDelimiter{\lbrace}{\mathopen}{lmsymb}{"66}{lmlargesymb}{"08}
+
+%% For drawing diagrams.
+%\usepackage{tikz}
+%\usetikzlibrary{positioning}
+
+% Page layout: stretch text to fill up page.
+\addtolength\footskip{.25\headheight}
+\flushbottom
+
+% Common list settings.
+\setlist{topsep=\parsep,itemsep=0pt}  % no extra vertical space around lists
+
+% Common macros.
+
+% Headings.
+\pagestyle{fancy}
+\let\headrule\empty
+\let\footrule\empty
+\lhead{\scshape CSC\,373\,H1}
+\chead{\large\scshape Problem Set \#\,2}
+\rhead{\scshape Winter 2015}
+\lfoot{\scshape Shihan Ai, 999700649, g3aishih}
+\cfoot{\scshape}
+\rfoot{\scshape page \thepage\space of \pageref{LastPage}}
+
+\begin{document}
+\begin{enumerate}[leftmargin=0pt,label=(\alph*)]
+\item No, there are cases where there is no solution.\\
+For example, consider the graph\\
+G = (1)--(2)--(3)\\
+where (1), (2), and (3) are the three vertices of the graph and -- represents an edge connecting two vertices.\\
+Suppose L = \{(1), (2), (3)\} then there exists no spanning tree T for G where nodes (1), (2), and (3) are all leaves because one of the nodes must connect to {\bf two} of the other nodes for the tree to remain connected.
+
+\item MST(V, E, L)\hspace{26mm}
+    \begin{enumerate}[leftmargin=10pt,label=\arabic*]
+    \item\hspace{2mm}{\bf for} i = 1,2,...n \hspace{5mm}n is the number of vertices in V
+    \item\hspace{2mm}\hspace{5mm} {\bf if} $v_{i}$ is in L
+    \item\hspace{2mm}\hspace{5mm} \hspace{5mm}tempE = []
+    \item\hspace{2mm}\hspace{5mm} \hspace{5mm}{\bf for} j = 1,2,...,m \hspace{5mm}m is the number of edges in E
+    \item\hspace{2mm}\hspace{5mm} \hspace{5mm}\hspace{5mm} {\bf if} $e_{j}$ has $v_{i}$ as one of its endpoints
+    \item\hspace{2mm}\hspace{5mm} \hspace{5mm}\hspace{5mm} \hspace{5mm} tempE = tempe $\cup$ $e_{j}$
+    \item\hspace{2mm}\hspace{5mm} sort(tempE)
+    \item\hspace{2mm}\hspace{5mm} remove from E all edges in tempE except for the one with the smallest weight
+    \item\hspace{2mm}kruskal(V, E)
+    \end{enumerate}
+
+\item {\bf This algorithm works based on the following intuition:}\\
+Since each leaf node can only have one connection, get rid of the edges in E that connect this leaf node to another node provided that there are shorter edges that can connect this leaf node to another node. If there is no shorter edge, keep the edge. We can safely do this because we know that a leaf vertex can only have one connection (so make sure the connection is the shortest of all possible connections).\\
+After this is done we can simply run any algorithm we have learned in class on our (possibly) modified inputs to get a result that will always satisfy our addition constraints (since there is no way for a leaf node to have more than one possible connection).
+\end{enumerate}
+\end{document}
