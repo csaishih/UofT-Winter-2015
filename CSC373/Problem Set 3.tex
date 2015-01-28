@@ -1,0 +1,137 @@
+%%  Problem Set 2 for CSC373H1, Winter 2015,
+%%  at the University of Toronto.
+%%
+%%  Copyright (c) 2015 Francois Pitt <fpitt@cs.utoronto.ca>
+%%  last updated at 09:30 (EST) on Tue  6 Jan 2015
+%%
+%%  CC BY-SA 4.0
+%%  This work (the current file named 'PS1handout.tex') is licensed under
+%%  the Creative Commons Attribution-ShareAlike 4.0 International License.
+%%  To view a copy of this license, visit
+%%      http://creativecommons.org/licenses/by-sa/4.0/
+%%  or send a letter to: Creative Commons, 444 Castro Street, Suite 900,
+%%  Mountain View, California, 94041, USA.
+%%  This is a human-readable summary of (and not a substitute for) the
+%%  license.
+%%  You are free to:
+%%      Share -- copy and redistribute the material in any medium or format
+%%      Adapt -- remix, transform, and build upon the material for any
+%%          purpose, even commercially.
+%%      The licensor cannot revoke these freedoms as long as you follow the
+%%          license terms.
+%%  Under the following terms:
+%%      Attribution -- You must give appropriate credit, provide a link to
+%%          the license, and indicate if changes were made. You may do so in
+%%          any reasonable manner, but not in any way that suggests the
+%%          licensor endorses you or your use.
+%%      ShareAlike -- If you remix, transform, or build upon the material,
+%%          you must distribute your contributions under the same license as
+%%          the original.
+%%      No additional restrictions -- You may not apply legal terms or
+%%          technological measures that legally restrict others from doing
+%%          anything the license permits.
+%%  Notices:
+%%      You do not have to comply with the license for elements of the
+%%      material in the public domain or where your use is permitted by an
+%%      applicable exception or limitation.
+%%      No warranties are given. The license may not give you all of the
+%%      permissions necessary for your intended use. For example, other
+%%      rights such as publicity, privacy, or moral rights may limit how you
+%%      use the material.
+
+\RequirePackage[l2tabu,orthodox]{nag}  % warn about common LaTeX pitfalls
+\RequirePackage[ascii]{inputenc}  % input is 7-bit ASCII
+\RequirePackage{fixltx2e}  % fix LaTeX2e kernel bugs
+
+\documentclass[11pt,twoside]{article}
+\usepackage{calc}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hmargin=1in,vmargin=1in]{geometry}
+\usepackage{lastpage}
+\usepackage{relsize}
+\usepackage[normalem]{ulem}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Set up fonts.
+\usepackage[T1]{fontenc}  % use true 8-bit fonts
+\usepackage{slantsc}  % allow slanted small-caps
+\usepackage{microtype}  % perform various font optimizations
+% Use Palatino-based monospace instead of kpfonts' default.
+\usepackage{newpxtext}
+\ttfamily
+\DeclareFontShape{T1}{\ttdefault}{m}{scsl}{<->ssub*\ttdefault/m/sc}{}
+\DeclareFontShape{T1}{\ttdefault}{b}{scsl}{<->ssub*\ttdefault/b/sc}{}
+% "Kepler" fonts.
+\usepackage[nott,notextcomp]{kpfonts}
+% Use curvier Latin Modern brackets instead of kpfonts' glyphs.
+\DeclareSymbolFont{lmsymb}     {OMS}{lmsy}{m}{n}
+\DeclareSymbolFont{lmlargesymb}{OMX}{lmex}{m}{n}
+\DeclareMathDelimiter{\rbrace}{\mathclose}{lmsymb}{"67}{lmlargesymb}{"09}
+\DeclareMathDelimiter{\lbrace}{\mathopen}{lmsymb}{"66}{lmlargesymb}{"08}
+
+%% For drawing diagrams.
+%\usepackage{tikz}
+%\usetikzlibrary{positioning}
+
+% Page layout: stretch text to fill up page.
+\addtolength\footskip{.25\headheight}
+\flushbottom
+
+% Common list settings.
+\setlist{topsep=\parsep,itemsep=0pt}  % no extra vertical space around lists
+
+% Common macros.
+
+% Headings.
+\pagestyle{fancy}
+\let\headrule\empty
+\let\footrule\empty
+\lhead{\scshape CSC\,373\,H1}
+\chead{\large\scshape Problem Set \#\,2}
+\rhead{\scshape Winter 2015}
+\lfoot{\scshape Shihan Ai, 999700649, g3aishih}
+\cfoot{\scshape}
+\rfoot{\scshape page \thepage\space of \pageref{LastPage}}
+
+\begin{document}
+{\bf I used this website to help me in this problem set:}\\ http://stackoverflow.com/questions/2633848/dynamic-programming-coin-change-decision-problem
+\begin{enumerate}[leftmargin=0pt,label=(\alph*)]
+
+\item {\bf Recursive structure}\\
+The solution for N depends on solutions for $N-N=0$, $N-3$, $N-10$, and $N-25$ (if they exist, i.e if $N=3$ then there is no solution for $N-10$ or $N-25$ since $N\geq0$)\\
+If we run our algorithm on an input {\bf N} that {\bf should} return {\bf True}, that means that {\bf N} is the {\bf exact} sum of a certain number of 3's, a certain number of 10's and a certain number of 25's (a, b, c are integers greater than or equal to 0) {\bf N = 3a + 10b + 25c}\\
+That also means that either 3, 10 or 25 can be subtracted from {\bf N}. If we subtract either 3, 10, or 25, we know that {\bf at least one} of the differences {\bf D} where {\bf D} can be \{$0$, $N-3$, $N-10$, $N-25$ such that {\bf D} $\geq0$\} must be an {\bf exact} sum of a certain number of 3's, a certain number of 10's and a certain number of 25's in order for the algorithm to return {\bf True} on {\bf N} (i.e running the algorithm on {\bf D} should return {\bf True}). This is where we can check if the output of running our algorithm on {\bf D} will return {\bf True}. If it does return {\bf True} then you should be able to buy exactly {\bf N} nuggets at this restaurant, if not, then you should {\bf not} be able to buy exactly {\bf N} nuggets at this restaurant. This is because if you currently have a sum that is not exactly composed of a certain number of 3's, a certain number of 10's and a certain number of 25's, then adding 3, 10, or 25 will not change the fact that it's not an exact sum of 3's, 10's and 25's.
+
+\item We define an array OPT of size $N+1$\\
+$OPT[i],\ i\ =\ 0,1,2,...,N$\\
+where $OPT[i]$ contains a boolean value indicating whether or not you can purchase exactly $i$ Tofu Nuggets at this restaurant\\
+In other words, $OPT[i]$ stores the output of running the algorithm on input $i$
+
+\item {\bf Base case:} $OPT[0]$ = True\\
+I can purchase exactly $0$ nuggets by purchasing exactly $0$ boxes of 3, 10, or 25 nuggets\\
+{\bf General case:} {\bf for} $i = 1\ ...\ N$\\
+$OPT[i]$ = {\bf False}\hspace{2mm} {\bf unless} \hspace{2mm}$i\geq j$ and $OPT[i-j]$ = True \hspace{2mm} for j = any value in the set \{3, 10, 25\}\\ If this is the case {\bf then} $OPT[i]$ = {\bf True}\\
+We know from the structure described in part {\bf (a)} that the algorithm must return {\bf True} for a number {\bf D} where {\bf D} can be \{$0$, $N-3$, $N-10$, $N-25$ such that {\bf D} $\geq0$\} in order for the algorithm to return {\bf True} for {\bf N}. This is where the intuition for my recurrence relation came from.
+
+\item Dynamic(N)
+\begin{enumerate}[leftmargin=10pt,label=\arabic*]
+\item OPT[0] = True
+\item \hspace{2mm}{\bf for} i = 1 .. N
+\item \hspace{2mm}\hspace{5mm}OPT[i] = False
+\item \hspace{2mm}\hspace{5mm}{\bf for} j = (3, 10, 25)
+\item \hspace{2mm}\hspace{5mm}\hspace{5mm}{\bf if} i $\geq$ j {\bf and} OPT[i $-$ j] \hspace{10mm}//If i < j, then the first condition will be false and should
+\item \hspace{2mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}OPT[i] = True \hspace{10mm}//exit the if statement, in other words, we shouldn't get a negative
+\item \hspace{2mm}{\bf return} OPT[N] \hspace{20mm}//index for OPT for the second condition check
+\end{enumerate}
+RunTime: $\Theta$(n)\\
+Yes, it runs in polynomial time since:\\
+{\bf for} loop at line 2 runs N times\\
+Nested {\bf for} loop at line 4 runs 3 times\\
+RunTime: $\Theta$(3n) = $\Theta$(n)\\
+
+
+\end{enumerate}
+\end{document}
