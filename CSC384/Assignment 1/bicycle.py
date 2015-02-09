@@ -1,3 +1,7 @@
+#Shihan Ai
+#g3aishih
+#999700649
+
 #Look for #IMPLEMENT tags in this file. These tags indicate what has
 #to be implemented to complete the bicycle domain.  
 
@@ -14,7 +18,7 @@ from random import randint
 from math import sqrt
 
 class bicycle(StateSpace):
-    def __init__(self, action, gval, carrying, loc, time, earned, unstarted, parent = None):
+    def __init__(self, action, gval, carrying, loc, time, earned, unstarted, map, job_list, parent = None):
 #IMPLEMENT
         '''Initialize a bicycle search state object.'''
         if action == 'START':   #NOTE action = 'START' is treated as starting the search space
@@ -26,13 +30,37 @@ class bicycle(StateSpace):
         self.time = time
         self.earned = earned
         self.unstarted = unstarted
+        self.map = map
+        self.job_list = job_list
+        
     def successors(self): 
 #IMPLEMENT
         '''Return list of bicycle objects that are the successors of the current object'''
         States = list()
-        #States.append(bicycle('first_pickup(\"{}\"))'.format(self.jobs[0]), self.gval + 1, self.jobs[0],  , self))
-        #States.append(bicycle('pickup(\"{}\"))'.format(), self.gval + 1, , self))
-        #States.append(bicycle('deliver(\"{}\"))'.format(), self.gval + 1, , self))
+        if self.action == 'START' or self.action.startswith('first_pickup'):
+            for i in range(0, len(self.unstarted)):
+                new_carrying = []
+                for j in range(0, len(self.carrying)):
+                    new_carrying.append(self.carrying[j])
+                new_carrying.append(self.unstarted[i])
+
+                for j in range(0, len(self.job_list)):
+                    if self.unstarted[i] == self.job_list[j][0]:
+                        new_loc = self.job_list[j][1]
+                        new_time = self.job_list[j][2]
+
+                new_unstarted = self.unstarted[:i] + self.unstarted[i + 1:]
+                States.append(bicycle('first_pickup({})'.format(self.unstarted[i]), self.gval, new_carrying, new_loc, new_time, self.earned, new_unstarted, self.map, self.job_list, self))
+
+        if self.action.startswith('pickup'):
+            States.append(bicycle('pickup({})'.format(), self.gval + 1, carring, loc, time, earned, unstarted, self.map, self.job_list, self))
+            pass
+
+        if self.action.startswith('deliver'):
+            #States.append(bicycle('deliver({})'.format(), self.gval + 1, carring, loc, time, earned, unstarted, self.map, self.job_list, self))
+            pass
+        return States
+
     def hashable_state(self) :
 #IMPLEMENT
         '''Return a data item that can be used as a dictionary key to UNIQUELY represent the state.'''
@@ -68,7 +96,11 @@ class bicycle(StateSpace):
     def get_load(self):
 #IMPLEMENT
         '''Return total weight being carried in this state'''
-        
+        load = 0
+        for i in range(0, len(self.job_list)):
+            if self.job_list[i][0] in self.carrying:
+                load += self.job_list[i][4]
+        return load        
         
     def get_time(self):
 #IMPLEMENT
@@ -111,13 +143,17 @@ def heur_max_delivery_costs(state):
 def bicycle_goal_fn(state):
 #IMPLEMENT
     '''Have we reached the goal (where all jobs have been delivered)?'''
+    return state.carrying == [] and state.unstarted == []
 
 def make_start_state(map, job_list):
 #IMPLEMENT
     '''Input a map list and a job_list. Return a bicycle StateSpace object
     with action "START", gval = 0, and initial location "home" that represents the 
     starting configuration for the scheduling problem specified'''
-    return bicycle('START', 0, [], 'home', 0, 0, job_list, parent = None)
+    unstarted = []
+    for i in range(0, len(job_list)):
+        unstarted.append(job_list[i][0])
+    return bicycle('START', 0, [], 'home', 420, 0, unstarted, map, job_list, parent = None)
 
 ########################################################
 #   Functions provided so that you can more easily     #
