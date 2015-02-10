@@ -37,7 +37,7 @@ class bicycle(StateSpace):
 #IMPLEMENT
         '''Return list of bicycle objects that are the successors of the current object'''
         States = list()
-        if self.action == 'START' or self.action.startswith('first_pickup'):
+        if self.action == 'START':
             for i in range(0, len(self.unstarted)):
                 new_carrying = []
                 for j in range(0, len(self.carrying)):
@@ -52,13 +52,56 @@ class bicycle(StateSpace):
                 new_unstarted = self.unstarted[:i] + self.unstarted[i + 1:]
                 States.append(bicycle('first_pickup({})'.format(self.unstarted[i]), self.gval, new_carrying, new_loc, new_time, self.earned, new_unstarted, self.map, self.job_list, self))
 
-        if self.action.startswith('pickup'):
-            States.append(bicycle('pickup({})'.format(), self.gval + 1, carring, loc, time, earned, unstarted, self.map, self.job_list, self))
-            pass
+        if self.action != 'START' and self.carrying != []:
+            for i in range(0, len(self.carrying)):
+                job = self.carrying[i]
+                for j in range(0, len(self.job_list)):
+                    if job == self.job_list[j][0]:
+                        loc1 = self.job_list[j][1]
+                        loc2 = self.job_list[j][3]
+                        new_loc = loc2
+                        distance = 0
+                        for k in range(0, len(self.map[1])):
+                            if loc1 in self.map[1][k] and loc2 in self.map[1][k]:
+                                distance = self.map[1][k][2]
+                        new_time = self.time + distance
+                        new_earned = self.earned
+                        for k in range(0, len(self.job_list[j][5])):
+                            if new_time <= self.job_list[j][5][k][0]:
+                                new_earned = new_earned + self.job_list[j][5][k][1]
+                                break
+                        
+                new_carrying = self.carrying[:i] + self.carrying[i+1:]                        
+                States.append(bicycle('deliver({})'.format(job), self.gval, new_carrying, new_loc, new_time, new_earned, self.unstarted, self.map, self.job_list, self))
 
-        if self.action.startswith('deliver'):
-            #States.append(bicycle('deliver({})'.format(), self.gval + 1, carring, loc, time, earned, unstarted, self.map, self.job_list, self))
-            pass
+        if self.action != 'START' and self.get_load() < 10000:
+            for i in range(0, len(self.unstarted)):
+                new_carrying = []
+                for j in range(0, len(self.carrying)):
+                    new_carrying.append(self.carrying[j])
+
+                for j in range(0, len(self.job_list)):
+                    if self.unstarted[i] == self.job_list[j][0]:
+                        if (self.get_load() + self.job_list[j][4]) < 10000:
+                            job = self.unstarted[i]
+                            new_carrying.append(job)
+
+                for j in range(0, len(self.job_list)):
+                    if job == self.job_list[j][0]:
+                        loc1 = self.job_list[j][1]
+                        new_loc = loc1
+                        distance = 0
+                        for k in range(0, len(self.map[1])):
+                            if loc1 in self.map[1][k] and self.loc in self.map[1][k]:
+                                distance = self.map[1][k][2]           
+                        new_time = self.time + distance
+                        if self.job_list[j][2] > new_time:
+                            new_time = self.job_list[j][2]
+                new_unstarted = self.unstarted[:i] + self.unstarted[i+1:]
+            
+                States.append(bicycle('pickup({})'.format(job), self.gval, new_carrying, new_loc, new_time, self.earned, new_unstarted, self.map, self.job_list, self))
+
+
         return States
 
     def hashable_state(self) :
@@ -129,6 +172,7 @@ def heur_sum_delivery_costs(state):
     #Plus 
     #Sum over every unstarted job J: Lost revenue if we immediately travel to J's pickup 
     #point then to J's dropoff poing and then deliver J.
+    
 
 def heur_max_delivery_costs(state):
 #IMPLEMENT
